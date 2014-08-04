@@ -53,6 +53,7 @@ exports.create_ans = function(req, res) {
 	var question =req.question;
 	var comment = new Comment(req.body);
 	comment.user = req.user;
+	comment.user.displayName = req.user.displayName;
 	question.comments.push(comment);
 	question.save(function(err) {
 		if (err) {

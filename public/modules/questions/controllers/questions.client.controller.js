@@ -1,8 +1,8 @@
 'use strict';
 
 // Questions controller
-angular.module('questions').controller('QuestionsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Questions', 
-	function($scope, $stateParams, $location, Authentication, Questions) {
+angular.module('questions').controller('QuestionsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Questions', 'Answers',
+	function($scope, $stateParams, $location, Authentication, Questions, Answers) {
 		$scope.authentication = Authentication;
 		$scope.comment_state = false;
 		// Create new Question
@@ -21,6 +21,23 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 
 			// Clear form fields
 			this.question = '';
+		};
+		$scope.create_ans = function() {
+			// Create new Question object
+			var comment = new Answers ({
+				questionId: this.question._id,
+				comment: this.comment
+			});
+			this.question.comments.push(comment);
+			// Redirect after save
+			this.question.$save(function(response) {
+				$location.path('questions/' + response._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+
+			// Clear form fields
+			this.comment = '';
 		};
 		// Remove existing Question
 		$scope.remove = function( question ) {
