@@ -3,7 +3,7 @@
 			<a href="/#!/questions/create" class="navbar-brand">Ask a Question</a>
 		</div>
 		<br>
-	<div class="page-header">
+	<div class="page-header question_view">
 		<h1 data-ng-bind="question.question"></h1>
 		<small>
 				<em class="text-muted">
@@ -20,12 +20,12 @@
 			<a class="btn btn-primary" data-ng-click="remove();">
 				<i class="glyphicon glyphicon-trash"></i>
 			</a>
-			<a class="btn btn-primary" data-ng-click="show_comment();">
-				<i class="glyphicon glyphicon-comment"></i>
-			</a>
+		
 		</div>
-		<h2><span data-ng-bind="question.comments.length"></span><span> Answers</span></h2><br>
-		<div data-ng-repeat="com in question.comments">
+		<h2><span data-ng-bind="question.comments.length"></span><span> Answers</span><span class="pull-right"><a class="btn btn-primary" data-ng-click="show_comment();">
+				<i class="glyphicon">Add Answer</i>
+			</a></span></h2><br>
+		<div data-ng-repeat="com in question.comments" class="answer_div">
 			<div>
 				<span data-ng-bind="com.comment"></span><br>
 				<em class="text-muted">
@@ -33,7 +33,7 @@
 					<span data-ng-bind="com.created | date:'mediumDate'"></span>
 					by <span data-ng-bind="com.user.displayName"></span>
 						<a class="btn btn-primary" data-ng-click="remove();">
-							<i class="glyphicon glyphicon-trash"></i>
+							<i class="glyphicon glyphicon-edit"></i>
 						</a>
 		
 			</div>

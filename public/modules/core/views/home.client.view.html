@@ -1,5 +1,5 @@
-<section data-ng-controller="HomeController">
-	<div class="text-center">
+<section>
+	<div data-ng-controller="HomeController" class="text-center">
 		<div class="row">
 			<a href="/#!/questions/create" class="navbar-brand">Ask a Question</a>
 			<a href="/#!/questions" class="navbar-brand">Questions</a>
@@ -13,6 +13,26 @@
 					<span data-ng-bind="question.user.displayName"></span>
 				</small>
 		    </div>
+		</div>
+	</div>
+	<div data-ng-controller="QuestionsController" class="text-center">
+		<div class="row">
+			<div data-ng-init="find()">
+			    <div class="page-header">
+			        <h1>Questions</h1>
+			    </div>
+			    <div class="list-group">
+			        <a data-ng-repeat="question in questions" data-ng-href="#!/questions/{{question._id}}" class="list-group-item">
+						<h4 class="list-group-item-heading" data-ng-bind="question.question"></h4>
+			            <small class="list-group-item-text">
+							Posted on
+							<span data-ng-bind="question.created | date:'medium'"></span>
+							by
+							<span data-ng-bind="question.user.displayName"></span>
+						</small>
+			        </a>
+			    </div>
+			</div>
 		</div>
 	</div>
 </section>
