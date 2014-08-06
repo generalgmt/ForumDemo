@@ -28,10 +28,10 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 				questionId: this.question._id,
 				comment: this.comment
 			});
-			this.question.comments.push(comment);
+			this.question.comments.push({comment: this.comment, user: Authentication.user.displayName, created: Date.now()});
 			// Redirect after save
-			this.question.$save(function(response) {
-				$location.path('questions/' + response._id);
+			comment.$save(function(response) {
+				// $location.path('questions/' + response._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});

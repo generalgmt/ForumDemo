@@ -1,27 +1,19 @@
 <section data-ng-controller="HomeController">
-	<div class="jumbotron text-center">
+	<div class="text-center">
 		<div class="row">
-			<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
-				<img alt="MEAN.JS" class="img-responsive text-center" src="modules/core/img/brand/logo.png" />
-			</div>
+			<a href="/#!/questions/create" class="navbar-brand">Ask a Question</a>
+			<a href="/#!/questions" class="navbar-brand">Questions</a>
+			<div data-ng-repeat="question in questions" class="list-group-item">
+				<h4 class="list-group-item-heading" data-ng-bind="question.question">
+				</h4>
+	            <small class="list-group-item-text">
+					Posted on
+					<span data-ng-bind="question.created | date:'medium'"></span>
+					by
+					<span data-ng-bind="question.user.displayName"></span>
+				</small>
+		    </div>
 		</div>
-		<br>
-		
 	</div>
-	<div class="jumbotron text-center">
-		<div class="row">
-	
-	<a href="/#!/questions/create" class="navbar-brand">Ask a Question</a>
-		<a href="/#!/questions/:questionId/answers/create_ans" class="navbar-brand">Users</a>
-	<a href="/#!/questions" class="navbar-brand">Questions</a>
-	
-
-	<!-- <a href="/#!/users" class="navbar-brand">users</a> -->
-		<a href="/#!/signup" class="navbar-brand">Signup</a>
-	<a href="/#!/signin" class="navbar-brand">Signin</a>
-		</div>
-		<div style="width:100px;height:100px;background-color:white;"></div>
-	</div>
-	<br>Enjoy &amp; Keep Us Updated,
-	<br>The MEAN.JS Team.
 </section>
+<footer> &copy Generalgmt</footer>

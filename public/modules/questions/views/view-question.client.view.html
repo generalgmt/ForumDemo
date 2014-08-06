@@ -1,4 +1,8 @@
 <section data-ng-controller="QuestionsController" data-ng-init="findOne()">
+	<div>
+			<a href="/#!/questions/create" class="navbar-brand">Ask a Question</a>
+		</div>
+		<br>
 	<div class="page-header">
 		<h1 data-ng-bind="question.question"></h1>
 		<small>
@@ -27,7 +31,11 @@
 				<em class="text-muted">
 					Posted on
 					<span data-ng-bind="com.created | date:'mediumDate'"></span>
-					by<span data-ng-bind="com.user.displayName"></span>
+					by <span data-ng-bind="com.user.displayName"></span>
+						<a class="btn btn-primary" data-ng-click="remove();">
+							<i class="glyphicon glyphicon-trash"></i>
+						</a>
+		
 			</div>
 		</div>
 		<div data-ng-show="comment_state">

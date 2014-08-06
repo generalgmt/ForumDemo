@@ -65,7 +65,10 @@ exports.create_ans = function(req, res) {
 		}
 	});
 };
-
+// exports.search = function(req, res, question_search){
+// 	// var question = Question.find({question:question_search}).limit( 10 );
+// 	// res.jsonp(question);
+// }
 /**
  * Show the current Question
  */
@@ -113,7 +116,7 @@ exports.update_ans = function(req, res) {
  * Delete an Question
  */
 exports.delete = function(req, res) {
-	var question = req.question ;
+	var question =Question ;
 
 	question.remove(function(err) {
 		if (err) {
@@ -148,7 +151,7 @@ exports.delete_ans = function(req, res) {
 /**
  * List of Questions
  */
-exports.list = function(req, res) { Question.find().sort('-created').populate('user', 'displayName').exec(function(err, questions) {
+exports.list = function(req, res) { Question.find().sort('-created').populate('user', 'displayName').populate('comments.user', 'display').exec(function(err, questions) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
@@ -163,7 +166,7 @@ exports.list = function(req, res) { Question.find().sort('-created').populate('u
  * Question middleware
  */
 exports.questionByID = function(req, res, next, id) {
-		Question.findById(id).populate('user', 'displayName').exec(function(err, question) {
+		Question.findById(id).populate('user', 'displayName').populate('comments.user', 'displayName').exec(function(err, question) {
 		if (err) return next(err);
 		if (! question) return next(new Error('Failed to load Question ' + id));
 		req.question = question ;
@@ -172,8 +175,12 @@ exports.questionByID = function(req, res, next, id) {
 };
 
 exports.answerByID = function(req, res, next, id) { 
-	req.comment = req.question.comments.id(id);
-	next();
+	Comment.findById(id).exec(function(err, comment) {
+		if (err) return next(err);
+		if (! comment) return next(new Error('Failed to load Comment ' + id));
+		req.comment = comment ;
+		next();
+	});
 };
 /**
  * Question authorization middleware

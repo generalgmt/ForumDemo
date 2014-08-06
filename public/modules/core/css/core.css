@@ -1,3 +1,8 @@
+body, html, section, .container{
+	height: 100%;
+	margin: 0 auto;
+	padding: 1%;
+}
 .content {
 	margin-top: 50px;
 }
@@ -7,3 +12,29 @@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
 	display: none !important;
 }
+section{
+	margin: 0 auto;
+	}
+
+body{
+	margin: 0 auto;
+	padding: 1%;
+	background-image:url('../img/splash-bg.jpg'); 
+	color: #fff;
+}
+/*
+.container{
+	margin: 0 auto;
+	padding: 1%;
+}*/
+footer{
+	text-align: center;
+}
+
+#name_div, #form_div, #profile_div{
+	vertical-align: top;
+}
+ #form_div{
+ 	padding: 1%;
+ 	color: black;
+ }
