@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	Question = mongoose.model('Question'),
 	Comment = mongoose.model('Comment'),
+	Vote = mongoose.model('Vote'),
 	_ = require('lodash');
 
 /**
@@ -65,10 +66,7 @@ exports.create_ans = function(req, res) {
 		}
 	});
 };
-// exports.search = function(req, res, question_search){
-// 	// var question = Question.find({question:question_search}).limit( 10 );
-// 	// res.jsonp(question);
-// }
+
 /**
  * Show the current Question
  */
@@ -95,6 +93,44 @@ exports.update = function(req, res) {
 	});
 };
 
+/**
+ * Update a vote
+ */
+exports.vote = function(req, res){
+	var question = req.question;
+	var comment = req.comment;
+	var vote = new Vote(req.body);
+	vote.user = req.user;
+	console.log(vote);
+	console.log(comment);
+	comment.votes.push(vote);
+	question.save(function(err) {
+		if (err) {
+			return res.send(400, {
+				message: getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(question);
+		}
+	});
+
+};
+exports.rem_vote = function(req, res){
+	var question = req.question;
+	var comment = req.comment;
+	var vote = req.vote;
+	console.log(vote);
+	vote.remove();
+	question.save(function(err) {
+		if (err) {
+			return res.send(400, {
+				message: getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(question);
+		}
+	});
+};
 exports.update_ans = function(req, res) {
 	var question = req.question;
 	var comment = req.comment;
@@ -175,12 +211,23 @@ exports.questionByID = function(req, res, next, id) {
 };
 
 exports.answerByID = function(req, res, next, id) { 
-	Comment.findById(id).exec(function(err, comment) {
-		if (err) return next(err);
-		if (! comment) return next(new Error('Failed to load Comment ' + id));
-		req.comment = comment ;
+	if(req.question){
+		req.comment = req.question.comments.id(id);
 		next();
-	});
+	}
+	else{
+		return next(new Error('Failed to load Comment ' + id));
+	}
+};
+
+exports.voteByID = function(req, res, next, id) { 
+	if(req.comment){
+		req.vote = req.comment.votes.id(id);
+		next();
+	}
+	else{
+		return next(new Error('Failed to load Comment ' + id));
+	}
 };
 /**
  * Question authorization middleware
@@ -198,3 +245,4 @@ exports.hasAuthorization_ans = function(req, res, next) {
 	}
 	next();
 };
+

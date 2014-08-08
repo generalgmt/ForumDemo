@@ -1,5 +1,40 @@
 .question_view{
-	width: 50%;
+	width: 60%;
 	margin: 0 auto;
 	height: 10%;
+}
+.answer_div{
+	margin: 0 auto;
+	width: 95%;
+}
+
+.comment_div{
+	margin: 0 auto;
+	width: 70%;
+}
+/*
+#chat_room{
+	width: 90%;
+	margin: 0 auto;
+	/*border: 1px solid green;*/
+/*	min-height: 300px;
+	margin-top: 30%;
+	background-color: #ccc;
+}
+.vote{
+	width: 30%;
+}*/
+
+table, tr, td{
+	padding: 2%;
+}
+tr{
+	margin: 2px;
+
+}
+table{
+	margin-bottom: 1px;
+}
+.align_center{
+	text-align: center;
 }

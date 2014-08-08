@@ -20,21 +20,16 @@ module.exports = function(app) {
 		.put(users.requiresLogin, questions.hasAuthorization_ans, questions.update_ans)
 		.delete(users.requiresLogin, questions.hasAuthorization_ans, questions.delete_ans);
 
-	// app.route('/questions/:questionId/vote')
-	// 		.put(users.requiresLogin, question.hasvoted, questions.update_vote)
+	app.route('/questions/:questionId/answers/:answerId/vote')
+		.post(users.requiresLogin, questions.vote);
 	
-	// app.route('/questions/:questionId/rem_vote')
-	// 	.put(users.requiresLogin, question.hasvoted, questions.remove_vote)
-	
-
-	// app.route('/questions/:questionId/answers/:answersId/vote')
-	//	.put(users.requiresLogin, question.hasvoted, questions.update_vote)
-	
-	// app.route('/questions/:questionId/answers/:answersId/rem_vote')
-	// 	.put(users.requiresLogin, question.hasvoted, questions.remove_vote)
+	app.route('/questions/:questionId/answers/:answerId/vote/:voteId')
+		.delete(users.requiresLogin, questions.rem_vote);
 	
 	// Finish by binding the Question middleware
 	app.param('questionId', questions.questionByID);
 
 	app.param('answerId', questions.answerByID);
+
+	app.param('voteId', questions.voteByID);
 };

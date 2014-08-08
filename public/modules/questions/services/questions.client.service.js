@@ -24,3 +24,15 @@ angular.module('questions').factory('Answers', ['$resource',
 		});
 	}
 ]);
+
+//Answers service used to communicate Questions REST endpoints
+angular.module('questions').factory('Votes', ['$resource',
+	function($resource) {
+		return $resource('questions/:questionId/answers/:answerId/vote/:voteId', { questionId: '@questionId', answersId: '@answerid', vote: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
+]);

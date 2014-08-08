@@ -1,8 +1,8 @@
 'use strict';
 
 // Questions controller
-angular.module('questions').controller('QuestionsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Questions', 'Answers',
-	function($scope, $stateParams, $location, Authentication, Questions, Answers) {
+angular.module('questions').controller('QuestionsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Questions', 'Answers', 'Votes',
+	function($scope, $stateParams, $location, Authentication, Questions, Answers, Votes) {
 		$scope.authentication = Authentication;
 		$scope.comment_state = false;
 		// Create new Question
@@ -39,6 +39,25 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 			// Clear form fields
 			this.comment = '';
 		};
+
+			$scope.create_vote = function() {
+			// Create new Question object
+			var vote = new Votes ({
+				questionId: this.question._id,
+				answerId: this.answer._Id,
+				vote: this.vote
+			});
+			this.comment.votes.push({vote: this.vote, user: Authentication.user.displayName, created: Date.now()});
+			// Redirect after save
+			vote.$save(function(response) {
+				// $location.path('questions/' + response._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+
+			// Clear form fields
+			this.vote = '';
+		};
 		// Remove existing Question
 		$scope.remove = function( question ) {
 			if ( question ) { question.$remove();
@@ -50,6 +69,35 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 				}
 			} else {
 				$scope.question.$remove(function() {
+					$location.path('questions');
+				});
+			}
+		};
+				$scope.remove_ans = function( question ) {
+			if ( question ) { comment.$remove();
+
+				for (var i in $scope.comments ) {
+					if ($scope.comments [i] === comment ) {
+						$scope.comments.splice(i, 1);
+					}
+				}
+			} else {
+				$scope.comments.$remove(function() {
+					$location.path('questions');
+				});
+			}
+		};
+
+				$scope.remove_vote = function( question ) {
+			if ( vote ) { vote.$remove();
+
+				for (var i in $scope.comments ) {
+					if ($scope.votes [i] === question ) {
+						$scope.votes.splice(i, 1);
+					}
+				}
+			} else {
+				$scope.vote.$remove(function() {
 					$location.path('questions');
 				});
 			}

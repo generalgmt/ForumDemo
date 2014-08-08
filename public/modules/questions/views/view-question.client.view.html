@@ -1,10 +1,11 @@
 <section data-ng-controller="QuestionsController" data-ng-init="findOne()">
 	<div>
 			<a href="/#!/questions/create" class="navbar-brand">Ask a Question</a>
+			<a href="/#!/questions" class="navbar-brand">Question</a>
 		</div>
 		<br>
 	<div class="page-header question_view">
-		<h1 data-ng-bind="question.question"></h1>
+		<h1 data-ng-bind="question.question" style="text-align:left"></h1>
 		<small>
 				<em class="text-muted">
 					Posted on
@@ -20,31 +21,43 @@
 			<a class="btn btn-primary" data-ng-click="remove();">
 				<i class="glyphicon glyphicon-trash"></i>
 			</a>
-		
 		</div>
 		<h2><span data-ng-bind="question.comments.length"></span><span> Answers</span><span class="pull-right"><a class="btn btn-primary" data-ng-click="show_comment();">
-				<i class="glyphicon">Add Answer</i>
-			</a></span></h2><br>
+				<i class="glyphicon">Answer</i>
+			</a></span></h2>
 		<div data-ng-repeat="com in question.comments" class="answer_div">
-			<div>
-				<span data-ng-bind="com.comment"></span><br>
-				<em class="text-muted">
-					Posted on
-					<span data-ng-bind="com.created | date:'mediumDate'"></span>
-					by <span data-ng-bind="com.user.displayName"></span>
-						<a class="btn btn-primary" data-ng-click="remove();">
-							<i class="glyphicon glyphicon-edit"></i>
-						</a>
-		
-			</div>
+			<table >
+			  <tr>
+			    <td><a class="btn btn-primary align_center" data-ng-click="create_vote();">ʌ</a></td>
+			   
+			    <td rowspan="3" >
+			    	<div class="comment_layout">
+					<span data-ng-bind="com.comment"></span><br>
+					<em class="text-muted">
+						Posted on
+						<span data-ng-bind="com.created | date:'mediumDate'"></span>
+						by <span data-ng-bind="com.user.displayName"></span>
+							<a class="btn btn-primary pull-right" data-ng-click="remove_ans();">
+								<i class="glyphicon glyphicon-edit "></i>
+							</a>
+					</div>
+				</td>
+			  </tr>
+			  <tr>
+			    <td data-ng-bind="com.votes.length" class="align_center"></td>
+			  </tr>
+			 <tr>
+			    <td><a class="btn btn-primary align_center" data-ng-click="remove_vote();">v</a></td>
+			  </tr>
+			</table>
 		</div>
-		<div data-ng-show="comment_state">
+		<div data-ng-show="comment_state" class="comment_div">
 			<form class="form-horizontal" data-ng-submit="create_ans()" novalidate>
             <fieldset>
                 <div class="form-group">
-                    <label class="control-label" for="comment">Comment</label>
+                    <label class="control-label" for="comment">Answer</label>
                     <div class="controls">
-						<textarea data-ng-model="comment" id="comment" class="form-control" cols="20" rows="5" placeholder="comment"></textarea>
+						<textarea data-ng-model="comment" id="comment" class="form-control" cols="20" rows="5" placeholder="Answer"></textarea>
 					</div>
                 </div>
                 <div class="form-group">
@@ -57,4 +70,14 @@
         </form>
 		</div>
 	</div>
+<!--</div>
+ <div class="col-md-4">
+	<div id="chat_room">
+		<div id="show_message"></div>
+		<form>
+			<textarea id="message" row="5" col="5" placeholder="Message"></textarea>
+		</form>
+	</div>
+</div> 
+</div>-->
 </section>
