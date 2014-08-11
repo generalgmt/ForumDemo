@@ -205,7 +205,7 @@ exports.delete_ans = function(req, res) {
 /**
  * List of Questions
  */
-exports.list = function(req, res) { Question.find().sort('-created').populate('user', 'displayName').populate('comments.user', 'display').exec(function(err, questions) {
+exports.list = function(req, res) { Question.find().sort('-created').populate('user', 'displayName').populate('comments.user', 'display').populate('votes.user', 'displayName').populate('vote_downs.user', 'displayName').exec(function(err, questions) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
@@ -220,7 +220,7 @@ exports.list = function(req, res) { Question.find().sort('-created').populate('u
  * Question middleware
  */
 exports.questionByID = function(req, res, next, id) {
-		Question.findById(id).populate('user', 'displayName').populate('comments.user', 'displayName').exec(function(err, question) {
+		Question.findById(id).populate('user', 'displayName').populate('comments.user', 'displayName').populate('votes.user', 'displayName').populate('vote_downs.user', 'displayName').exec(function(err, question) {
 		if (err) return next(err);
 		if (! question) return next(new Error('Failed to load Question ' + id));
 		req.question = question ;

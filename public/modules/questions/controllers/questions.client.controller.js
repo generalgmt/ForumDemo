@@ -87,33 +87,34 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 
         };
 
+
+        var hasUserVoted = function(comment, user){
+        	for(var c in comment.votes){
+        		if(c.user === user){
+        			return true;
+        		}
+        	}
+        	return false;
+        };
+
 		
-        	$scope.create_vote = function(con) {
-        	for(var q in $scope.question.user){	
-	        	if ($scope.question.user[q] !== $scope.vote.user) {
-					var vote = new Votes ({
-						questionId: $scope.question._id,
-						answerId: con._id,
-						vote: $scope.vote = 1 
-					});
-					 console.log(vote);
-					vote.$save(function(response) {
-						// $location.path('questions/' + response._id);
-						$scope.question = response;
-					}, function(errorResponse) {
-						$scope.error = errorResponse.data.message;
-					});
-					$scope.hasvoted = true;
-					$scope.notvoted = false;
-				}
-				else{
-					console.log('has voted');
-				}
-			}
-			// Clear form fields		
+    	$scope.create_vote = function(comment) {
+    		if(!hasUserVoted(comment, $scope.authentication.user)){
+    			var vote = new Votes ({
+					questionId: $scope.question._id,
+					answerId: comment._id,
+					vote: $scope.vote = 1 
+				});
+				vote.$save(function(response) {
+					// $location.path('questions/' + response._id);
+					$scope.question = response;
+				}, function(errorResponse) {
+					$scope.error = errorResponse.data.message;
+				});
+    		}		
 		};
 
-			$scope.creat_vote = function(con) {
+		$scope.create_down_vote = function(con) {
         		// console.log('votes');
 			var vote_down = new Vote_Downs ({
 				questionId: $scope.question._id,
@@ -132,13 +133,13 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 		};
 		
 		$scope.remove_vote = function( vote_param ) {
-				console.log('remove');
-				 var vote = new Votes({
-                  questionId: $scope.question._id,
-                  answerId: vote_param._id,             
-            	});
-				 console.log(vote);
-				 console.log(vote_param.splice(1,1));
+			console.log('remove');
+			var vote = new Votes({
+              questionId: $scope.question._id,
+              answerId: vote_param._id,             
+        	});
+			console.log(vote);
+			console.log(vote_param.splice(1,1));
 			vote_param.splice(1,1).$save(function(response) {
 				// $location.path('questions/' + response._id);
 				$scope.question = response;
