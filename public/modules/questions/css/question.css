@@ -6,6 +6,10 @@
 .answer_div{
 	margin: 0 auto;
 	width: 95%;
+	border-radius: 5px;
+	border: 1px solid maroon;
+	background-color: #ccc;
+	color: black;
 }
 
 .comment_div{
@@ -27,14 +31,17 @@
 
 table, tr, td{
 	padding: 2%;
+	margin-right: 2px;
 }
-tr{
-	margin: 2px;
-
+td{
+	padding: 5px;
 }
 table{
 	margin-bottom: 1px;
 }
 .align_center{
 	text-align: center;
+}
+.td_row{
+	width: 100%;
 }

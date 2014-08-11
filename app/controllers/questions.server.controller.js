@@ -1,5 +1,4 @@
 'use strict';
-
 /**
  * Module dependencies.
  */
@@ -7,6 +6,7 @@ var mongoose = require('mongoose'),
 	Question = mongoose.model('Question'),
 	Comment = mongoose.model('Comment'),
 	Vote = mongoose.model('Vote'),
+	Vote_Down = mongoose.model('Vote_Down'),
 	_ = require('lodash');
 
 /**
@@ -115,6 +115,25 @@ exports.vote = function(req, res){
 	});
 
 };
+exports.down_vote = function(req, res){
+	var question = req.question;
+	var comment = req.comment;
+	var vote_down = new Vote_Down(req.body);
+	vote_down.user = req.user;
+	console.log(vote_down);
+	console.log(comment);
+	comment.vote_downs.push(vote_down);
+	question.save(function(err) {
+		if (err) {
+			return res.send(400, {
+				message: getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(question);
+		}
+	});
+
+};
 exports.rem_vote = function(req, res){
 	var question = req.question;
 	var comment = req.comment;
@@ -152,8 +171,7 @@ exports.update_ans = function(req, res) {
  * Delete an Question
  */
 exports.delete = function(req, res) {
-	var question =Question ;
-
+	var question = req.question;
 	question.remove(function(err) {
 		if (err) {
 			return res.send(400, {
@@ -240,9 +258,8 @@ exports.hasAuthorization = function(req, res, next) {
 };
 
 exports.hasAuthorization_ans = function(req, res, next) {
-	if (req.comment.user.toString() !== req.user.id) {
+	if (req.comment.user.id !== req.user.id) {
 		return res.send(403, 'User is not authorized');
 	}
 	next();
 };
-

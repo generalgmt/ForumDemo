@@ -20,10 +20,13 @@ module.exports = function(app) {
 		.put(users.requiresLogin, questions.hasAuthorization_ans, questions.update_ans)
 		.delete(users.requiresLogin, questions.hasAuthorization_ans, questions.delete_ans);
 
-	app.route('/questions/:questionId/answers/:answerId/vote')
+	app.route('/questions/:questionId/answers/:answerId/votes')
 		.post(users.requiresLogin, questions.vote);
 	
-	app.route('/questions/:questionId/answers/:answerId/vote/:voteId')
+	app.route('/questions/:questionId/answers/:answerId/vote_downs')
+		.post(users.requiresLogin, questions.down_vote);
+	
+	app.route('/questions/:questionId/answers/:answerId/votes/:voteId')
 		.delete(users.requiresLogin, questions.rem_vote);
 	
 	// Finish by binding the Question middleware
