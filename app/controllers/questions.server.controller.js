@@ -100,29 +100,29 @@ exports.vote = function(req, res){
 	var question = req.question;
 	var comment = req.comment;
 	var vote = new Vote(req.body);
+	console.log('body');
+	console.log(req.body);
+	console.log('body end');
 	vote.user = req.user;
-	console.log(vote);
+	var hasvoted = false;
+	console.log('old comment');
 	console.log(comment);
+	console.log('old  done');
+	for(var i = 0; i < comment.votes.length; i++) {
+        if (comment.votes[i].user.toString() === req.user._id.toString()) {
+        	// comment.votes[i] = vote;
+        	comment.votes.splice(i, 1);
+        	console.log('should replace');
+          	hasvoted = true;
+           	break;
+        }
+    }
+    //push the new vote into the comment
 	comment.votes.push(vote);
-	question.save(function(err) {
-		if (err) {
-			return res.send(400, {
-				message: getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(question);
-		}
-	});
-
-};
-exports.down_vote = function(req, res){
-	var question = req.question;
-	var comment = req.comment;
-	var vote_down = new Vote_Down(req.body);
-	vote_down.user = req.user;
-	console.log(vote_down);
+	console.log('new comment');
 	console.log(comment);
-	comment.vote_downs.push(vote_down);
+	console.log('new comment done');
+
 	question.save(function(err) {
 		if (err) {
 			return res.send(400, {
@@ -132,8 +132,9 @@ exports.down_vote = function(req, res){
 			res.jsonp(question);
 		}
 	});
-
+	
 };
+
 exports.rem_vote = function(req, res){
 	var question = req.question;
 	var comment = req.comment;
@@ -205,7 +206,7 @@ exports.delete_ans = function(req, res) {
 /**
  * List of Questions
  */
-exports.list = function(req, res) { Question.find().sort('-created').populate('user', 'displayName').populate('comments.user', 'display').populate('votes.user', 'displayName').populate('vote_downs.user', 'displayName').exec(function(err, questions) {
+exports.list = function(req, res) { Question.find().sort('-created').populate('user', 'displayName').populate('comments.user', 'displayName').populate('votes.user', 'displayName').exec(function(err, questions) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
@@ -220,7 +221,7 @@ exports.list = function(req, res) { Question.find().sort('-created').populate('u
  * Question middleware
  */
 exports.questionByID = function(req, res, next, id) {
-		Question.findById(id).populate('user', 'displayName').populate('comments.user', 'displayName').populate('votes.user', 'displayName').populate('vote_downs.user', 'displayName').exec(function(err, question) {
+		Question.findById(id).populate('user', 'displayName').populate('comments.user', 'displayName').populate('votes.user', 'displayName').exec(function(err, question) {
 		if (err) return next(err);
 		if (! question) return next(new Error('Failed to load Question ' + id));
 		req.question = question ;

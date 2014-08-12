@@ -23,9 +23,6 @@ module.exports = function(app) {
 	app.route('/questions/:questionId/answers/:answerId/votes')
 		.post(users.requiresLogin, questions.vote);
 	
-	app.route('/questions/:questionId/answers/:answerId/vote_downs')
-		.post(users.requiresLogin, questions.down_vote);
-	
 	app.route('/questions/:questionId/answers/:answerId/votes/:voteId')
 		.delete(users.requiresLogin, questions.rem_vote);
 	

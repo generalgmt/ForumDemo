@@ -54,10 +54,6 @@ var CommentSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	user: {
-		type: Schema.ObjectId,
-		ref: 'User'
-	},
 	votes: {
 		type: [VoteSchema],
 		default: []
@@ -65,6 +61,10 @@ var CommentSchema = new Schema({
 	vote_downs: {
 		type: [Vote_downSchema],
 		default: []
+	},
+	user: {
+		type: Schema.ObjectId,
+		ref: 'User'
 	}
 });
   

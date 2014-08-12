@@ -67,7 +67,6 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 			// Clear form fields
 			$scope.comment_state = false;
 		};
-
 		$scope.remove_ans = function(comm) {
 			var answer = new Answers({
                  questionId: $scope.question._id,
@@ -75,71 +74,77 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
            	});
 
      	   answer.$remove(function(response) { 
-        	console.log(response);
            for (var i in $scope.question.comments) {
              if ($scope.question.comments[i] === comm) {
                  $scope.question.comments.splice(i, 1);
              }
            }
-         }, function(errorResponse) {
+          }, function(errorResponse) {
 			$scope.error = errorResponse.data.message;
-		});
+			});
 
         };
 
-
-        var hasUserVoted = function(comment, user){
-        	for(var c in comment.votes){
-        		if(c.user === user){
+        var hasUserVoted = function(comment, signed_in_user){
+        	for(var vote in comment.votes){
+        		if(vote.user === signed_in_user){
         			return true;
+
         		}
+        		
         	}
         	return false;
         };
 
 		
-    	$scope.create_vote = function(comment) {
-    		if(!hasUserVoted(comment, $scope.authentication.user)){
-    			var vote = new Votes ({
-					questionId: $scope.question._id,
-					answerId: comment._id,
-					vote: $scope.vote = 1 
-				});
-				vote.$save(function(response) {
-					// $location.path('questions/' + response._id);
-					$scope.question = response;
-				}, function(errorResponse) {
-					$scope.error = errorResponse.data.message;
-				});
-    		}		
-		};
-
-		$scope.create_down_vote = function(con) {
-        		// console.log('votes');
-			var vote_down = new Vote_Downs ({
+    	$scope.create_vote = function(comment, value) {
+    		var vote = new Votes ({
 				questionId: $scope.question._id,
-				answerId: con._id,
-				vote: $scope.vote = 1 
+				answerId: comment._id,
+				vote: value
 			});
-			 console.log(vote_down);
-			vote_down.$save(function(response) {
+			vote.$save(function(response) {
+				// $location.path('questions/' + response._id);
+				$scope.question = response;
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+			$scope.vote = '';		
+		};
+		
+		$scope.remove_vote = function( vote_param ) {
+			 var vote = new Votes({
+              questionId: $scope.question._id,
+              answerId: vote_param._id,             
+        	});
+			 console.log(vote);
+			 console.log(vote_param.splice(1,1));
+			vote_param.splice(1,1).$save(function(response) {
 				// $location.path('questions/' + response._id);
 				$scope.question = response;
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
 
-			// Clear form fields		
+		};
+
+		//count votes in a comment
+		$scope.countVotes = function(comment) {
+			var count = 0;
+			for(var i = 0; i < comment.votes.length; i++){
+				count = count + comment.votes[i].vote;
+			}
+			return count;
 		};
 		
 		$scope.remove_vote = function( vote_param ) {
 			console.log('remove');
-			var vote = new Votes({
+			 var vote = new Votes({
               questionId: $scope.question._id,
               answerId: vote_param._id,             
         	});
-			console.log(vote);
-			console.log(vote_param.splice(1,1));
+			 console.log(vote);
+			 console.log(vote_param.splice(1,1));
 			vote_param.splice(1,1).$save(function(response) {
 				// $location.path('questions/' + response._id);
 				$scope.question = response;

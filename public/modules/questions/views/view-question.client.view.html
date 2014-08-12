@@ -28,7 +28,7 @@
 		<div data-ng-repeat="com in question.comments" class="answer_div">
 			<table >
 			  <tr>
-			    <td><a class="glyphicon glyphicon-chevron-up" data-ng-click="create_vote(com);" data-ng-init="hasvoted"></a></td>
+			    <td><a class="glyphicon glyphicon-chevron-up" data-ng-click="create_vote(com, 1);" data-ng-init="hasvoted"></a></td>
 			   
 			    <td rowspan="3" class="td_row">
 			    	<div class="comment_layout">
@@ -44,10 +44,10 @@
 				</td>
 			  </tr>
 			  <tr>
-			    <td data-ng-bind="(com.votes.length) - (com.vote_downs.length)" class="align_center"></td>
+			    <td data-ng-bind="countVotes(com)" class="align_center"></td>
 			  </tr>
 			 <tr>
-			    <td><a class="glyphicon glyphicon-chevron-down" data-ng-click="create_down_vote(com);"  data-ng-init="notvoted"></a></td>
+			    <td><a class="glyphicon glyphicon-chevron-down" data-ng-click="create_vote(com, -1);"  data-ng-init="notvoted"></a></td>
 			  </tr>
 			</table>
 		</div>
@@ -80,4 +80,5 @@
 	</div>
 </div> 
 </div>-->
+</section>
 </section>
