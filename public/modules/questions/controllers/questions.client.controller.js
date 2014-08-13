@@ -5,8 +5,7 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 		function($scope, $stateParams, $location, Authentication, Questions, Answers, Votes, Vote_Downs) {
 		$scope.authentication = Authentication;
 		$scope.comment_state = false;
-		$scope.hasvoted = false;
-		$scope.notvoted = false;
+		
 		// Create new Question
 		$scope.create = function() {
 			// Create new Question object
@@ -58,14 +57,15 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 				comment: $scope.comment
 			});
 			comment.$save(function(response) {
-				// $location.path('questions/' + response._id);
 				$scope.question = response;
+				$location.path('questions/' + response._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
 
-			// Clear form fields
 			$scope.comment_state = false;
+			$scope.comment = '';
+
 		};
 		$scope.remove_ans = function(comm) {
 			var answer = new Answers({
@@ -96,7 +96,9 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
         	return false;
         };
 
-		
+/**
+ * Create a Vote
+ */		
     	$scope.create_vote = function(comment, value) {
     		var vote = new Votes ({
 				questionId: $scope.question._id,
@@ -111,7 +113,9 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 			});
 			$scope.vote = '';		
 		};
-		
+/**
+ * Delete a Vote
+ */		
 		$scope.remove_vote = function( vote_param ) {
 			 var vote = new Votes({
               questionId: $scope.question._id,
@@ -128,7 +132,9 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 
 		};
 
-		//count votes in a comment
+/**
+ * count votes in a comment
+ */		
 		$scope.countVotes = function(comment) {
 			var count = 0;
 			for(var i = 0; i < comment.votes.length; i++){
@@ -139,12 +145,10 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 		
 		$scope.remove_vote = function( vote_param ) {
 			console.log('remove');
-			 var vote = new Votes({
+			var vote = new Votes({
               questionId: $scope.question._id,
               answerId: vote_param._id,             
         	});
-			 console.log(vote);
-			 console.log(vote_param.splice(1,1));
 			vote_param.splice(1,1).$save(function(response) {
 				// $location.path('questions/' + response._id);
 				$scope.question = response;
@@ -154,10 +158,6 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 
 		};
 
-		// Update existing Question
-		
-		
-		
 		// Find a list of Questions
 		$scope.find = function() {
 			$scope.questions = Questions.query();
