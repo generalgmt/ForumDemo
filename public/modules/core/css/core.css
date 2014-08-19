@@ -21,6 +21,9 @@ body{
 	background-image:url('/modules/core/img/splash-bg.jpg'); 
 	color: #fff;
 }
+.no_underline{
+	border-bottom: 0;
+}
 /*
 .container{
 	margin: 0 auto;
