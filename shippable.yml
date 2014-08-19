@@ -5,5 +5,5 @@ env:
   - NODE_ENV=travis
 services:
   - mongodb
- after_success:
-  - git push git@heroku.com:forumdemo.git master
+ after success:
+ 	- git push git@heroku.com:forumdemo.git master
