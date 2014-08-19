@@ -1,10 +1,12 @@
 'use strict';
 
 // Questions controller
-angular.module('questions').controller('QuestionsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Questions', 'Answers', 'Votes', 'Vote_Downs',
-		function($scope, $stateParams, $location, Authentication, Questions, Answers, Votes, Vote_Downs) {
+angular.module('questions').controller('QuestionsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Questions', 'Comments', 'Votes', 'Vote_Downs',
+		function($scope, $stateParams, $location, Authentication, Questions, Comments, Votes, Vote_Downs) {
 		$scope.authentication = Authentication;
 		$scope.comment_state = false;
+		$scope.hasvoted = false;
+		$scope.notvoted = false;
 		
 		// Create new Question
 		$scope.create = function() {
@@ -19,8 +21,6 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
-
-			// Clear form fields
 			this.question = '';
 		};
 		
@@ -33,7 +33,8 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 						$scope.questions.splice(i, 1);
 					}
 				}
-			} else {
+			}
+			else {
 				$scope.question.$remove(function() {
 					$location.path('questions');
 				});
@@ -42,7 +43,6 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 
 		$scope.update = function() {
 			var question = $scope.question ;
-
 			question.$update(function() {
 				$location.path('questions/' + question._id);
 			}, function(errorResponse) {
@@ -51,40 +51,38 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
 		};
 
 		$scope.create_ans = function() {
-			// Create new Answer object
-			var comment = new Answers ({
-				questionId: $scope.question._id,
-				comment: $scope.comment
+			var comment = new Comments ({
+				questionId: this.question._id,
+				comment: this.comment
 			});
+			$scope.question.comments.push({comment: this.comment, user: Authentication.user.displayName, created: Date.now()});
 			comment.$save(function(response) {
 				$scope.question = response;
-				$location.path('questions/' + response._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
-
 			$scope.comment_state = false;
-			$scope.comment = '';
-
 		};
+
 		$scope.remove_ans = function(comm) {
-			var answer = new Answers({
+			var comment = new Comments({
                  questionId: $scope.question._id,
                 _id: comm._id,                
            	});
 
-     	   answer.$remove(function(response) { 
-           for (var i in $scope.question.comments) {
-             if ($scope.question.comments[i] === comm) {
+     	   comment.$remove(function(response) { 
+     	   for (var i in $scope.question.comments) {
+           	if ($scope.question.comments[i] === comm) {
                  $scope.question.comments.splice(i, 1);
              }
            }
-          }, function(errorResponse) {
-			$scope.error = errorResponse.data.message;
-			});
+	        }, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+				});
 
         };
 
+		
         var hasUserVoted = function(comment, signed_in_user){
         	for(var vote in comment.votes){
         		if(vote.user === signed_in_user){
@@ -96,66 +94,40 @@ angular.module('questions').controller('QuestionsController', ['$scope', '$state
         	return false;
         };
 
-/**
- * Create a Vote
- */		
+		
     	$scope.create_vote = function(comment, value) {
     		var vote = new Votes ({
 				questionId: $scope.question._id,
-				answerId: comment._id,
+				commentId: comment._id,
 				vote: value
 			});
 			vote.$save(function(response) {
-				// $location.path('questions/' + response._id);
 				$scope.question = response;
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
 			$scope.vote = '';		
 		};
-/**
- * Delete a Vote
- */		
+		
 		$scope.remove_vote = function( vote_param ) {
 			 var vote = new Votes({
               questionId: $scope.question._id,
-              answerId: vote_param._id,             
+              commentId: vote_param._id,             
         	});
-			 console.log(vote);
-			 console.log(vote_param.splice(1,1));
+			console.log(vote);
+			console.log(vote_param.splice(1,1));
 			vote_param.splice(1,1).$save(function(response) {
-				// $location.path('questions/' + response._id);
 				$scope.question = response;
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
-
 		};
-
-/**
- * count votes in a comment
- */		
 		$scope.countVotes = function(comment) {
 			var count = 0;
 			for(var i = 0; i < comment.votes.length; i++){
 				count = count + comment.votes[i].vote;
 			}
 			return count;
-		};
-		
-		$scope.remove_vote = function( vote_param ) {
-			console.log('remove');
-			var vote = new Votes({
-              questionId: $scope.question._id,
-              answerId: vote_param._id,             
-        	});
-			vote_param.splice(1,1).$save(function(response) {
-				// $location.path('questions/' + response._id);
-				$scope.question = response;
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-
 		};
 
 		// Find a list of Questions

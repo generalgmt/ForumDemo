@@ -16,6 +16,11 @@
 	margin: 0 auto;
 	width: 70%;
 }
+.center_form{
+	width: 60%;
+	text-align: center;
+	margin: 0 auto;
+}
 /*
 #chat_room{
 	width: 90%;
@@ -44,4 +49,7 @@ table{
 }
 .td_row{
 	width: 100%;
+}
+.question_link{
+  margin-bottom: 2%;
 }

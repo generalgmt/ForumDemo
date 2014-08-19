@@ -24,23 +24,6 @@ var VoteSchema = new Schema({
 
 mongoose.model('Vote', VoteSchema);
 
-var Vote_downSchema = new Schema({
-	vote_down: {
-		type: Number,
-		default: 0,
-		trim: true
-	},
-	created: {
-		type: Date,
-		default: Date.now
-	},
-	user: {
-		type: Schema.ObjectId,
-		ref: 'User'
-	}
-});
-
-mongoose.model('Vote_Down', Vote_downSchema);
 /**
  * Comment Schema
  */
@@ -56,10 +39,6 @@ var CommentSchema = new Schema({
 	},
 	votes: {
 		type: [VoteSchema],
-		default: []
-	},
-	vote_downs: {
-		type: [Vote_downSchema],
 		default: []
 	},
 	user: {
