@@ -3,21 +3,23 @@
         <h1>New Question</h1>
     </div>
     <div class="col-md-12">
-        <form class="form-horizontal center_form" data-ng-submit="create()" novalidate>
-            <fieldset>
-                <div class="form-group">
-                    <label class="control-label" for="question">Question</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="question" id="question" class="form-control" placeholder="question" required>
+        <div class="form_positon">
+            <form class="form-horizontal center_form" data-ng-submit="create()" novalidate>
+                <fieldset>
+                    <div class="form-group">
+                        <div class="">
+                            <textarea type="text" data-ng-model="question" id="question" class="" placeholder="question" row="15" col= "15" required>
+                            </textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-default">
-                </div>
-				<div data-ng-show="error" class="text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
-            </fieldset>
-        </form>
+                    <div class="form-group">
+                        <input type="submit" class="btn">
+                    </div>
+    				<div data-ng-show="error" class="text-danger">
+    					<strong data-ng-bind="error"></strong>
+    				</div>
+                </fieldset>
+            </form>
+        </div>
     </div>
 </section>

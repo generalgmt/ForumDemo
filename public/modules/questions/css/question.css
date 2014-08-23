@@ -17,9 +17,36 @@
 	width: 70%;
 }
 .center_form{
-	width: 60%;
+	width: 95%;
 	text-align: center;
 	margin: 0 auto;
+	height: 95%;
+	color: black;
+}
+
+.form_positon{
+	width: 70%;
+	min-height: 200px;
+	margin: 0 auto;
+	/*box-shadow: 2px 1px 20px 10px;*/
+	padding: 2%;
+	background-color: blue;
+	border-radius: 10px;
+}
+.form_positon input[type="submit"]{
+	text-align: center;
+	color: #fff;
+	background-color: maroon;
+}
+.form_positon textarea{
+	width: 90%;
+	margin: 0 auto;
+	min-height: 130px;
+	color: black;
+	border-radius: 5px;
+	padding: 5px;
+	
+
 }
 /*
 #chat_room{
