@@ -48,6 +48,9 @@
 	
 
 }
+.page-header{
+	border-bottom: 0;
+}
 /*
 #chat_room{
 	width: 90%;
