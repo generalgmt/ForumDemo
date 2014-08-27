@@ -11,7 +11,9 @@
 	background-color: #ccc;
 	color: black;
 }
-
+h2{
+	padding-left: 2px;
+}
 .comment_div{
 	margin: 0 auto;
 	width: 70%;
